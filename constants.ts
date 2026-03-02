@@ -5,30 +5,15 @@ import {
   DeepPartial,
 } from 'lightweight-charts';
 
-export const navItems = [
-  {
-    label: 'Home',
-    href: '/',
-  },
-  {
-    label: 'Search',
-    href: '/',
-  },
-  {
-    label: 'All Coins',
-    href: '/coins',
-  },
-];
-
 const CHART_COLORS = {
-  background: '#0b1116',
-  text: '#8f9fb1',
-  grid: '#1a2332',
-  border: '#1a2332',
-  crosshairVertical: '#ffffff40',
-  crosshairHorizontal: '#ffffff20',
-  candleUp: '#158A6E',
-  candleDown: '#EB1C36',
+  background: '#020611',
+  text: '#94a3b8',
+  grid: 'rgba(34, 211, 238, 0.04)',
+  border: 'rgba(34, 211, 238, 0.08)',
+  crosshairVertical: 'rgba(34, 211, 238, 0.25)',
+  crosshairHorizontal: 'rgba(34, 211, 238, 0.12)',
+  candleUp: '#00e5a0',
+  candleDown: '#ff4757',
 } as const;
 
 export const getCandlestickConfig = (): CandlestickSeriesPartialOptions => ({
@@ -50,7 +35,7 @@ export const getChartConfig = (
     background: { type: ColorType.Solid, color: CHART_COLORS.background },
     textColor: CHART_COLORS.text,
     fontSize: 12,
-    fontFamily: 'Inter, Roboto, "Helvetica Neue", Arial',
+    fontFamily: '"JetBrains Mono", "SF Mono", Consolas, monospace',
   },
   grid: {
     vertLines: { visible: false },

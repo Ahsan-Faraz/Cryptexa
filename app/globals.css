@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -54,6 +54,8 @@
   --color-green-300: var(--green-300);
   --color-red-500: var(--red-500);
   --color-yellow-500: var(--yellow-500);
+  --color-cyan-400: var(--cyan-400);
+  --color-cyan-500: var(--cyan-500);
 }
 
 :root {
@@ -124,21 +126,24 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* Brand colors */
-  --dark-900: #000510;
-  --dark-700: #0f1316;
-  --dark-500: #1a2027;
-  --dark-400: #1e2833;
+  /* Brand colors - Premium Trading Terminal */
+  --dark-900: #020611;
+  --dark-700: #070b14;
+  --dark-500: #0d1420;
+  --dark-400: #131d2e;
 
-  --purple-600: #1b254b;
-  --purple-100: #a3aed0;
+  --purple-600: #162040;
+  --purple-100: #8899b8;
 
-  --green-500: #76da44;
-  --green-400: #2ebe7b;
-  --green-300: #99e39e;
+  --green-500: #00e5a0;
+  --green-400: #00c98b;
+  --green-300: #7df5c8;
 
-  --red-500: #ff685f;
-  --yellow-500: #dabe44;
+  --red-500: #ff4757;
+  --yellow-500: #ffbe2e;
+
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
 }
 
 @layer base {
@@ -146,8 +151,41 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-dark-700 text-foreground;
+    @apply bg-dark-900 text-foreground font-sans;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6, 182, 212, 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0, 229, 160, 0.04), transparent);
   }
+}
+
+/* =================== UTILITY CLASSES =================== */
+
+@utility glass-card {
+  background: linear-gradient(135deg, rgba(13, 20, 32, 0.8) 0%, rgba(19, 29, 46, 0.6) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(34, 211, 238, 0.08);
+}
+
+@utility glass-card-hover {
+  background: linear-gradient(135deg, rgba(13, 20, 32, 0.9) 0%, rgba(19, 29, 46, 0.7) 100%);
+  border-color: rgba(34, 211, 238, 0.15);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.05), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+@utility glow-border {
+  position: relative;
+}
+
+@utility text-gradient {
+  background: linear-gradient(135deg, #00e5a0 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility mono {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 @layer components {
@@ -156,44 +194,76 @@
   }
 
   .main-container {
-    @apply py-6 md:py-12 mx-auto px-4 sm:px-6 max-w-360 w-full space-y-6 md:space-y-6;
+    @apply pt-24 pb-6 md:pb-12 mx-auto px-4 sm:px-6 max-w-360 w-full space-y-6 md:space-y-6;
   }
 
   .badge {
-    @apply font-medium mt-2 h-fit py-1 flex items-center gap-1;
+    @apply font-medium mt-2 h-fit py-1 flex items-center gap-1 mono text-xs tracking-wide;
   }
 
   .badge-up {
-    @apply bg-green-600/20! text-green-600!;
+    @apply bg-green-500/15! text-green-500! border border-green-500/20;
   }
 
   .badge-down {
-    @apply bg-red-500/20! text-red-500!;
+    @apply bg-red-500/15! text-red-500! border border-red-500/20;
   }
 
   .skeleton {
-    @apply bg-dark-400/60;
+    @apply bg-dark-400/40 animate-pulse rounded;
   }
 
   header {
-    @apply border-b border-dark-400 h-20;
+    @apply h-16 fixed top-0 left-0 right-0 z-50;
+    background: rgba(2, 6, 17, 0.8);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.06);
 
     .inner {
-      @apply flex justify-between items-center h-full;
+      @apply flex justify-between items-center h-full mx-auto px-4 sm:px-6 max-w-360 w-full;
 
       a {
         @apply mb-0;
       }
 
+      .logo-link {
+        @apply flex items-center gap-2.5 no-underline transition-all duration-300;
+
+        .logo-img {
+          @apply rounded-lg;
+        }
+
+        .logo-text {
+          @apply text-xl font-bold tracking-tight;
+          background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        &:hover .logo-text {
+          background: linear-gradient(135deg, #ffffff 0%, #22d3ee 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+
       nav {
-        @apply flex h-full items-center;
+        @apply flex h-full items-center gap-6 pr-4;
 
         .nav-link {
-          @apply px-6 py-5 flex items-center transition-all hover:text-white font-medium h-full text-purple-100 cursor-pointer;
+          @apply flex items-center transition-all duration-300 font-medium cursor-pointer text-sm tracking-wide;
+          color: rgba(148, 163, 184, 0.7);
+
+          &:hover {
+            color: #22d3ee;
+          }
         }
 
         .nav-link.is-active {
-          @apply text-white;
+          color: #ffffff;
         }
 
         .nav-link.is-home {
@@ -204,22 +274,24 @@
   }
 
   #candlestick-chart {
-    @apply p-3 mt-5 rounded-lg bg-dark-500;
+    @apply p-4 mt-5 rounded-xl glass-card transition-all duration-300;
 
     .chart-header {
-      @apply flex flex-col gap-3 xl:flex-row xl:items-center mb-4 font-semibold text-[#e6eef8] text-[20px];
+      @apply flex flex-col gap-3 xl:flex-row xl:items-center mb-4 font-semibold text-[#e6eef8] text-[18px] tracking-tight;
     }
 
     .button-group {
-      @apply flex gap-1 xl:gap-2 items-center;
+      @apply flex gap-1 xl:gap-1.5 items-center;
     }
 
     .config-button {
-      @apply rounded-sm border-0 cursor-pointer px-2.5 py-2 text-xs xl:text-sm text-purple-100 hover:bg-dark-400 hover:text-white;
+      @apply rounded-md border-0 cursor-pointer px-2.5 py-1.5 text-xs xl:text-sm text-purple-100/60 transition-all duration-200 hover:bg-cyan-500/10 hover:text-cyan-400;
     }
 
     .config-button-active {
-      @apply rounded-sm px-2.5 py-1.5 border-0 cursor-pointer text-sm text-gray-900 bg-green-500;
+      @apply rounded-md px-2.5 py-1.5 border-0 cursor-pointer text-sm text-dark-900 font-semibold;
+      background: linear-gradient(135deg, #00e5a0, #06b6d4);
+      box-shadow: 0 0 12px rgba(0, 229, 160, 0.3);
     }
 
     .chart {
@@ -276,10 +348,10 @@
   }
 
   #categories {
-    @apply pt-8 mt-5 w-full bg-dark-500 rounded-xl overflow-hidden;
+    @apply pt-8 mt-5 w-full glass-card rounded-xl overflow-hidden transition-all duration-300;
 
     h4 {
-      @apply text-xl md:text-2xl font-semibold mb-2 pl-5;
+      @apply text-xl md:text-2xl font-semibold mb-2 pl-5 tracking-tight;
     }
 
     .category-cell {
@@ -295,40 +367,40 @@
     }
 
     .change-header-cell {
-      @apply font-medium;
+      @apply font-medium mono text-sm;
     }
 
     .change-cell {
-      @apply flex flex-1 gap-1 items-center pl-2 text-center font-medium;
+      @apply flex flex-1 gap-1 items-center pl-2 text-center font-medium mono text-sm;
     }
 
     .market-cap-cell {
-      @apply font-medium;
+      @apply font-medium mono text-sm;
     }
 
     .volume-cell {
-      @apply font-medium;
+      @apply font-medium mono text-sm;
     }
   }
 
   #trending-coins {
-    @apply w-full flex flex-col justify-center h-full py-4 bg-dark-500 rounded-xl;
+    @apply w-full flex flex-col justify-center h-full py-4 glass-card rounded-xl transition-all duration-300;
 
     h4 {
-      @apply text-xl md:text-2xl font-semibold mb-2 px-5;
+      @apply text-xl md:text-2xl font-semibold mb-2 px-5 tracking-tight;
     }
 
     .trending-coins-table {
-      @apply bg-dark-500 overflow-hidden;
+      @apply overflow-hidden;
 
       .name-cell {
         @apply font-bold;
 
         a {
-          @apply pl-1 md:pl-2 py-1 md:py-2 xl:py-1 flex items-center gap-2 md:gap-3;
+          @apply pl-1 md:pl-2 py-1 md:py-2 xl:py-1 flex items-center gap-2 md:gap-3 transition-colors duration-200 hover:text-cyan-400;
 
           img {
-            @apply rounded-full size-8 md:size-9;
+            @apply rounded-full size-8 md:size-9 ring-1 ring-white/5;
           }
 
           p {
@@ -338,11 +410,11 @@
       }
 
       .change-cell {
-        @apply font-medium py-4 pr-3 md:pr-5;
+        @apply font-medium py-4 pr-3 md:pr-5 mono text-sm;
       }
 
       .price-cell {
-        @apply font-bold pr-5 text-sm max-w-full truncate;
+        @apply font-bold pr-5 text-sm max-w-full truncate mono;
       }
 
       .price-change {
@@ -356,7 +428,7 @@
   }
 
   #categories-fallback {
-    @apply pt-8 mt-5 w-full bg-dark-500 rounded-xl overflow-hidden;
+    @apply pt-8 mt-5 w-full glass-card rounded-xl overflow-hidden;
 
     h4 {
       @apply text-xl md:text-2xl font-semibold mb-2 pl-5;
@@ -412,7 +484,7 @@
   }
 
   #coin-overview-fallback {
-    @apply w-full h-full xl:col-span-2 px-2 bg-dark-500 rounded-xl;
+    @apply w-full h-full xl:col-span-2 px-2 glass-card rounded-xl;
 
     .header {
       @apply flex-1 mb-2 flex gap-2 md:gap-3;
@@ -448,7 +520,7 @@
   }
 
   #trending-coins-fallback {
-    @apply w-full flex flex-col justify-center h-full py-4 bg-dark-500 rounded-xl;
+    @apply w-full flex flex-col justify-center h-full py-4 glass-card rounded-xl;
 
     h4 {
       @apply text-xl md:text-2xl font-semibold mb-2 px-5;
@@ -500,7 +572,7 @@
   }
 
   #coin-details-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
+    @apply py-12 pt-24 px-4 sm:px-6 mx-auto max-w-360 size-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
 
     .primary {
       @apply size-full xl:col-span-2;
@@ -519,10 +591,10 @@
     }
 
     .exchange-table {
-      @apply bg-dark-500 rounded-xl overflow-hidden mt-5;
+      @apply glass-card rounded-xl overflow-hidden mt-5;
 
       .exchange-name {
-        @apply text-green-500 font-bold;
+        @apply text-cyan-400 font-bold;
 
         a {
           @apply absolute inset-0 z-10;
@@ -557,14 +629,14 @@
         @apply rounded-lg grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 sm:gap-5;
 
         li {
-          @apply text-base bg-dark-500 px-5 py-6 rounded-lg flex flex-col gap-3;
+          @apply text-base glass-card px-5 py-6 rounded-xl flex flex-col gap-3 transition-all duration-300 hover:border-cyan-500/15;
 
           .label {
             @apply text-purple-100;
           }
 
           .link {
-            @apply flex items-center text-green-500 gap-1;
+            @apply flex items-center text-cyan-400 gap-1;
           }
         }
       }
@@ -572,7 +644,7 @@
   }
 
   #coins-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full items-center gap-10 justify-center;
+    @apply py-12 pt-24 px-4 sm:px-6 mx-auto max-w-360 size-full items-center gap-10 justify-center;
 
     .content {
       @apply flex flex-col w-full space-y-5;
@@ -583,7 +655,7 @@
     }
 
     .coins-table {
-      @apply bg-dark-500 rounded-xl max-h-fit overflow-hidden;
+      @apply glass-card rounded-xl max-h-fit overflow-hidden;
 
       .rank-cell {
         @apply pl-5 max-w-20! py-5 font-medium text-purple-100;
@@ -599,6 +671,10 @@
         .token-info {
           @apply flex items-center gap-3;
 
+          img {
+            @apply ring-1 ring-white/5 rounded-full;
+          }
+
           p {
             @apply max-w-full truncate;
           }
@@ -606,11 +682,11 @@
       }
 
       .price-cell {
-        @apply py-4 font-medium;
+        @apply py-4 font-medium mono text-sm;
       }
 
       .change-cell {
-        @apply font-medium;
+        @apply font-medium mono text-sm;
       }
 
       .change-value {
@@ -618,42 +694,44 @@
       }
 
       .market-cap-cell {
-        @apply pr-5 font-medium;
+        @apply pr-5 font-medium mono text-sm;
       }
     }
   }
 
   #search-modal {
     .trigger {
-      @apply px-6 hover:bg-transparent! font-medium transition-all h-full cursor-pointer text-base text-purple-100 flex items-center gap-2;
+      @apply px-6 hover:bg-transparent! font-medium transition-all h-full cursor-pointer text-base text-purple-100/80 hover:text-cyan-400 flex items-center gap-2;
     }
 
     .kbd {
-      @apply pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100;
+      @apply pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-cyan-500/20 bg-dark-400 px-1.5 font-mono text-[10px] font-medium opacity-100 text-cyan-400/70;
     }
 
     .dialog {
-      @apply bg-dark-400! max-w-sm sm:max-w-md md:max-w-2xl mx-auto;
+      @apply max-w-sm sm:max-w-md md:max-w-2xl mx-auto border-cyan-500/10;
+      background: rgba(7, 11, 20, 0.95) !important;
+      backdrop-filter: blur(20px);
     }
 
     .cmd-input {
       @apply bg-dark-500!;
 
       input {
-        @apply placeholder:text-purple-100!;
+        @apply placeholder:text-purple-100/50!;
       }
     }
 
     .list {
-      @apply bg-dark-500 max-h-100;
+      @apply bg-dark-500/80 max-h-100;
     }
 
     .heading {
-      @apply flex items-center gap-2 text-purple-100;
+      @apply flex items-center gap-2 text-purple-100/60 uppercase tracking-wider text-xs;
     }
 
     .group {
-      @apply bg-dark-500 text-purple-100;
+      @apply bg-dark-500/80 text-purple-100;
     }
   }
 
@@ -663,13 +741,13 @@
     }
 
     .search-item {
-      @apply grid grid-cols-4 gap-4 items-center justify-between data-[selected=true]:bg-dark-400 transition-all !cursor-pointer hover:bg-dark-400 py-3;
+      @apply grid grid-cols-4 gap-4 items-center justify-between data-[selected=true]:bg-dark-400/80 transition-all !cursor-pointer hover:bg-dark-400/80 py-3 rounded-lg;
 
       .coin-info {
         @apply flex gap-4 items-center col-span-2;
 
         img {
-          @apply size-9 rounded-full;
+          @apply size-9 rounded-full ring-1 ring-white/5;
         }
 
         div {
@@ -677,16 +755,16 @@
         }
 
         .coin-symbol {
-          @apply text-sm text-purple-100 uppercase;
+          @apply text-sm text-purple-100/60 uppercase mono tracking-wider;
         }
       }
 
       .coin-price {
-        @apply font-semibold text-sm lg:text-base;
+        @apply font-semibold text-sm lg:text-base mono;
       }
 
       .coin-change {
-        @apply flex gap-1 text-sm lg:text-base items-center font-medium;
+        @apply flex gap-1 text-sm lg:text-base items-center font-medium mono;
       }
     }
   }
@@ -695,25 +773,29 @@
     @apply w-full space-y-5;
 
     h4 {
-      @apply text-2xl font-semibold;
+      @apply text-2xl font-semibold tracking-tight;
     }
 
     .panel {
-      @apply space-y-2 bg-dark-500 px-5 py-7 rounded-lg;
+      @apply space-y-2 glass-card px-5 py-7 rounded-lg;
     }
 
     .input-wrapper {
-      @apply bg-dark-400 h-12 w-full rounded-md flex items-center justify-between py-4 pr-4;
+      @apply bg-dark-400/80 h-12 w-full rounded-md flex items-center justify-between py-4 pr-4 border border-white/5 transition-all duration-200;
+
+      &:focus-within {
+        @apply border-cyan-500/30;
+      }
 
       .input {
-        @apply flex-1 text-lg! border-none font-medium bg-dark-400! focus-visible:ring-0 shadow-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
+        @apply flex-1 text-lg! border-none font-medium mono bg-transparent! focus-visible:ring-0 shadow-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
       }
 
       .coin-info {
         @apply flex items-center gap-1;
 
         p {
-          @apply font-semibold text-base text-purple-100;
+          @apply font-semibold text-base text-purple-100/80 mono;
         }
       }
     }
@@ -722,34 +804,37 @@
       @apply relative flex justify-center items-center my-4;
 
       .line {
-        @apply h-px z-10 w-full bg-dark-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+        @apply h-px z-10 w-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+        background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.15), transparent);
       }
 
       .icon {
-        @apply size-8 z-20 bg-dark-400 rounded-full p-2 text-green-500;
+        @apply size-8 z-20 bg-dark-400 rounded-full p-2 text-cyan-400 border border-cyan-500/20;
       }
     }
 
     .output-wrapper {
-      @apply bg-dark-400 h-12 w-full rounded-md flex items-center justify-between py-4 pl-4;
+      @apply bg-dark-400/80 h-12 w-full rounded-md flex items-center justify-between py-4 pl-4 border border-white/5;
 
       p {
-        @apply text-base font-medium;
+        @apply text-base font-medium mono;
       }
 
       .select-trigger {
-        @apply w-fit! border-none! cursor-pointer! h-12! bg-dark-400! hover:bg-dark-400! focus-visible:ring-0!;
+        @apply w-fit! border-none! cursor-pointer! h-12! bg-transparent! hover:bg-dark-400! focus-visible:ring-0!;
 
         .select-value {
-          @apply font-semibold! text-xs! text-purple-100!;
+          @apply font-semibold! text-xs! text-purple-100/80! mono!;
         }
       }
 
       .select-content[data-converter] {
-        @apply bg-dark-400 max-h-125;
+        @apply max-h-125 border-cyan-500/10;
+        background: rgba(7, 11, 20, 0.95) !important;
+        backdrop-filter: blur(20px);
 
         .select-item {
-          @apply cursor-pointer hover:bg-dark-500!;
+          @apply cursor-pointer hover:bg-dark-500/80!;
         }
       }
     }
@@ -759,11 +844,11 @@
     @apply mt-8 w-full;
 
     .tabs-list {
-      @apply size-full! p-1! bg-transparent! border-b! border-dark-500! rounded-none!;
+      @apply size-full! p-1! bg-transparent! border-b! border-cyan-500/10! rounded-none!;
     }
 
     .tabs-trigger {
-      @apply data-[state=active]:border-none! data-[state=active]:bg-transparent! flex justify-start! mb-0! py-2! text-lg! font-semibold! md:text-2xl!;
+      @apply data-[state=active]:border-none! data-[state=active]:bg-transparent! data-[state=active]:text-cyan-400! flex justify-start! mb-0! py-2! text-lg! font-semibold! md:text-2xl! transition-colors! duration-200!;
     }
 
     .tabs-content {
@@ -775,14 +860,14 @@
     @apply space-y-5 w-full;
 
     h3 {
-      @apply text-3xl font-medium;
+      @apply text-3xl font-medium tracking-tight text-purple-100/60;
     }
 
     .info {
       @apply flex gap-3 items-center;
 
       img {
-        @apply size-11.25 sm:size-12.5 xl:size-19.25;
+        @apply size-11.25 sm:size-12.5 xl:size-19.25 ring-2 ring-cyan-500/10 rounded-full;
       }
     }
 
@@ -790,7 +875,7 @@
       @apply flex gap-4;
 
       h1 {
-        @apply text-3xl sm:text-5xl xl:text-6xl font-semibold;
+        @apply text-3xl sm:text-5xl xl:text-6xl font-semibold mono tracking-tight;
       }
     }
 
@@ -798,38 +883,38 @@
       @apply grid grid-cols-3 mt-8 gap-4 sm:gap-6 w-fit;
 
       li {
-        @apply text-base border-r last:border-none border-purple-600 flex flex-col gap-2;
+        @apply text-base border-r last:border-none border-purple-600/50 flex flex-col gap-2;
 
         .label {
-          @apply text-purple-100 max-sm:text-sm;
+          @apply text-purple-100/60 max-sm:text-sm tracking-wide uppercase text-xs;
         }
 
         .value {
-          @apply flex gap-1 flex-1 items-end text-base font-medium;
+          @apply flex gap-1 flex-1 items-end text-base font-medium mono;
         }
       }
     }
   }
 
   #coin-overview {
-    @apply w-full h-full xl:col-span-2 px-2 bg-dark-500 rounded-xl;
+    @apply w-full h-full xl:col-span-2 px-2 glass-card rounded-xl transition-all duration-300;
 
     .header {
       @apply flex-1 mb-2 flex gap-2 md:gap-3;
 
       img {
-        @apply w-10 h-10 md:w-14 md:h-14;
+        @apply w-10 h-10 md:w-14 md:h-14 ring-1 ring-white/5 rounded-full;
       }
 
       .info {
         @apply flex flex-col;
 
         p {
-          @apply flex text-purple-100 text-xs md:text-sm w-fit;
+          @apply flex text-purple-100/60 text-xs md:text-sm w-fit uppercase tracking-wider;
         }
 
         h1 {
-          @apply text-xl md:text-2xl font-semibold;
+          @apply text-xl md:text-2xl font-semibold mono;
         }
       }
     }
@@ -841,7 +926,7 @@
     }
 
     .pagination-control {
-      @apply bg-dark-400 rounded-sm py-1;
+      @apply bg-dark-400/60 rounded-sm py-1 border border-white/5;
 
       &.prev {
         @apply pr-2;
@@ -868,11 +953,12 @@
       }
 
       .page-link {
-        @apply hover:bg-dark-400! rounded-sm text-base cursor-pointer;
+        @apply hover:bg-dark-400/60! rounded-sm text-base cursor-pointer transition-all duration-200;
       }
 
       .page-link-active {
-        @apply bg-green-500! text-dark-900 font-semibold;
+        @apply text-dark-900 font-semibold;
+        background: linear-gradient(135deg, #00e5a0, #06b6d4) !important;
       }
     }
   }
@@ -881,7 +967,8 @@
     @apply size-full xl:col-span-2;
 
     .divider {
-      @apply my-8! bg-purple-600!;
+      @apply my-8!;
+      background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.15), transparent) !important;
     }
 
     .trend {
@@ -901,26 +988,26 @@
     }
 
     .trades-table {
-      @apply bg-dark-500 mt-5 rounded-xl overflow-hidden;
+      @apply glass-card mt-5 rounded-xl overflow-hidden;
 
       .price-cell {
-        @apply pl-5 py-5 font-medium;
+        @apply pl-5 py-5 font-medium mono text-sm;
       }
 
       .amount-cell {
-        @apply py-4 font-medium;
+        @apply py-4 font-medium mono text-sm;
       }
 
       .value-cell {
-        @apply font-medium;
+        @apply font-medium mono text-sm;
       }
 
       .type-cell {
-        @apply font-medium;
+        @apply font-medium mono text-sm;
       }
 
       .time-cell {
-        @apply pr-5;
+        @apply pr-5 mono text-sm text-purple-100/50;
       }
     }
   }
@@ -928,8 +1015,8 @@
 
 /* Custom Scrollbar Styles */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -937,12 +1024,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #1e2833;
+  background: rgba(34, 211, 238, 0.1);
   border-radius: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #171a34;
+  background: rgba(34, 211, 238, 0.2);
 }
 
 /* Table Custom Scrollbar */
@@ -951,8 +1038,8 @@
 }
 
 .custom-scrollbar [data-slot='table-container']::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
 }
 
 .custom-scrollbar [data-slot='table-container']::-webkit-scrollbar-track {
@@ -960,10 +1047,10 @@
 }
 
 .custom-scrollbar [data-slot='table-container']::-webkit-scrollbar-thumb {
-  background: #1e2833;
+  background: rgba(34, 211, 238, 0.1);
   border-radius: 8px;
 }
 
 .custom-scrollbar [data-slot='table-container']::-webkit-scrollbar-thumb:hover {
-  background: #171a34;
+  background: rgba(34, 211, 238, 0.2);
 }

@@ -10,9 +10,9 @@ const Header = () => {
 
   return (
     <header>
-      <div className="main-container inner">
-        <Link href="/">
-          <Image src="/logo.svg" alt="CoinPulse logo" width={132} height={40} />
+      <div className="header-container inner">
+        <Link href="/" className="logo-link">
+          <Image src="/logo.png" alt="Cryptexa" width={140} height={40} className="logo-img" />
         </Link>
 
         <nav>
@@ -25,8 +25,6 @@ const Header = () => {
           >
             Home
           </Link>
-
-          <p>Search Modal</p>
 
           <Link
             href="/coins"
